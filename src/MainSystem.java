@@ -1,3 +1,4 @@
+import java.awt.Desktop;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -48,11 +49,11 @@ public class MainSystem {
 				break;
 			
 			case 4:
-				addVIM();
+				importOpenAndSave();
 				break;
 				
 			case 5:
-				
+				loadOpenAndExport();
 				break;
 			
 			default:
@@ -66,7 +67,48 @@ public class MainSystem {
 
 	
 	
-	private static void addVIM() {
+	private static void loadOpenAndExport() {
+		String vimName = null;
+		String bookTitle = null;
+		Book book;
+		VIM vim = null;
+		byte[] data = null;
+		File file;
+		FileOutputStream fos = null;
+		
+		System.out.println("\nEnter the book title: ");
+		bookTitle = in.next();
+		book = lib.getBookByTitle(bookTitle);
+		if(book == null) {
+			System.out.println("This book doesn`t exist");
+		} else {
+			System.out.println(book.toString());
+			System.out.println("\nEnter complete file name: ");
+			vimName = in.next();
+			vim = book.getVIMByName(vimName);
+			if(vim == null) {
+				System.out.println("This VIM doesn`t exist");				
+			} else {
+				data = vim.getData();
+				file = new File(vim.getName());
+				try {
+					fos = new FileOutputStream(file);
+					fos.write(data);
+					fos.close();
+					Desktop.getDesktop().open(file);
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				
+			}
+		}
+	}
+
+
+
+	private static void importOpenAndSave() {
 		JFileChooser chooser;
 		FileFilter filter;
 		FileInputStream fis = null;
@@ -100,7 +142,27 @@ public class MainSystem {
 				data = new byte[(int)file.length()];
 			} else {
 				System.out.println("You cancelled adding the vim.");
+				stop = true;
 			}
+		}
+		
+		if(!stop) {
+			try {
+				fis = new FileInputStream(file);
+				fis.read(data);
+				fis.close();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+			vim = new VIM(file.getName(), data);
+			book.addVIM(vim);
+			
+			System.out.println("You`ve added file: " + file.getName() 
+					+ " to book: " + bookTitle);
+			
 		}
 		
 	}

@@ -1,6 +1,7 @@
 import java.io.Serializable;
 
 public class VIM implements Serializable{
+	private static final long serialVersionUID = 8665385437956184166L;
 	private String name ;
 	private byte[] data;
 	
@@ -17,6 +18,10 @@ public class VIM implements Serializable{
 	
 	public String getName() {
 		return name;
+	}
+	
+	public byte[] getData() {
+		return data;
 	}
 	
 }

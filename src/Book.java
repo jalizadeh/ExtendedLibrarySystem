@@ -49,8 +49,18 @@ public class Book implements Serializable{
 
 	@Override
 	public String toString() {
+		String vimNames  = "";
+		String vimAccount = "(" + vims.size() + ")";
+		
+		Iterator<VIM> i = vims.iterator();
+		while(i.hasNext()) {
+			vimNames += i.next().getName() + ", ";
+		}
+		
 		return "\nisbn: " + isbn + "\ntitle: " + title + 
-				"\nauthor: " + author + "\nprice: " + price ;
+				"\nauthor: " + author + "\nprice: " + price 
+				+"\nVIM Files: " + vimAccount
+				+"\n" + vimNames;
 	}
 	
 	
