@@ -13,6 +13,18 @@ public class Library extends Object implements Serializable{
 	public void addBook(Book book) {
 		collection.add(book);
 	}
+	
+	public Book getBookByTitle(String title) {
+		Book v = null;
+		Iterator<Book> i = collection.iterator();
+		if(i.hasNext()) {
+			v = i.next();
+			if(v.getTitle().toLowerCase().contentEquals(title.toLowerCase())) {
+				return v;
+			}
+		}
+		return null;
+	}
 
 	@Override
 	public String toString() {
@@ -31,7 +43,11 @@ public class Library extends Object implements Serializable{
 			total += b.toString()+"\n";
 		}
 		
-		return total;
+		//note there is one character => "\n" at least
+		if(total.length() > 1)
+			return total;
+		else
+			return "There is no book to show.";
 	}
 	
 }

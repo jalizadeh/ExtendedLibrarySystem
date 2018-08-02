@@ -1,3 +1,2 @@
-# LibrarySystem
-A very simple and class based library app
-You can start by loading "savedlib" in root# ExtendedLibrarySystem
+# ExtendedLibrarySystem
+It will support VIS(video/image/sound)

@@ -7,6 +7,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Scanner;
 
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 public class MainSystem {
 
 	static String filename = null;
@@ -19,7 +23,9 @@ public class MainSystem {
 			System.out.println("\nEnter 0: load a library" 
 					+ "\nEnter 1: save & quit" 
 					+ "\nEnter 2: list all books"
-					+ "\nEnter 3: add book to library");
+					+ "\nEnter 3: add book to library"
+					+ "\nEnter 4: import & save Video/Image/Music (vim) file to book"
+					+ "\nEnter 5: load & export vim file from book & play it");
 			
 			int answer = in.nextInt();
 			
@@ -41,8 +47,16 @@ public class MainSystem {
 				addNewBook();
 				break;
 			
-			default:
+			case 4:
+				addVIM();
+				break;
 				
+			case 5:
+				
+				break;
+			
+			default:
+				System.out.println("Entered vlaue is not appropriate. please try again.");
 				break;
 			}
 		}
@@ -52,6 +66,47 @@ public class MainSystem {
 
 	
 	
+	private static void addVIM() {
+		JFileChooser chooser;
+		FileFilter filter;
+		FileInputStream fis = null;
+		
+		Book book;
+		String bookTitle = null;
+		VIM vim;
+		File file = null;
+		byte[] data = null;
+		boolean stop = false;
+		
+		System.out.println("\nEnter the book title to add vim on it: ");
+		bookTitle = in.next();
+		book = lib.getBookByTitle(bookTitle);
+		if(book == null) {
+			System.out.println("This book doesn`t exist.");
+		} else {
+			System.out.println("\nChoose your video/image/music to add: ");
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			chooser = new JFileChooser();
+			filter = new FileNameExtensionFilter("Video / Image / Music", "wav", "avi", "jpg", "mp3", "mp4", "png", "jpeg");
+			chooser.addChoosableFileFilter(filter);
+			chooser.setFileFilter(filter);
+			int resultCode = chooser.showOpenDialog(null);
+			if(resultCode == JFileChooser.APPROVE_OPTION) {
+				file = chooser.getSelectedFile();
+				data = new byte[(int)file.length()];
+			} else {
+				System.out.println("You cancelled adding the vim.");
+			}
+		}
+		
+	}
+
+
+
 	private static void addNewBook() {
 		int isbn;
 		String title, author;
